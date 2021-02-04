@@ -1,0 +1,37 @@
+#include <cstdio>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <stack>
+// clang-format off
+
+int main(int argc, const char *const argv[]) {
+  using namespace std;
+  if(argc < 2) {
+    printf("Usage: bf source\n");
+    return 1;
+  }
+
+  ifstream f{argv[1]};
+  auto stream = string(istream_iterator<uint8_t>{f}, {});
+  stack<string::iterator> st;
+
+  uint8_t cells[30000]{0};
+  uint8_t *ptr = &cells[0];
+
+  for(auto it = stream.begin(); it != stream.end(); ++it) {
+    switch (*it) {
+      case '>': ++ptr;                                            break;
+      case '<': --ptr;                                            break;
+      case '+': ++*ptr;                                           break;
+      case '-': --*ptr;                                           break;
+      case '.': putchar(*ptr);                                    break;
+      case ',': *ptr = getchar();                                 break;
+      case '[': if (*ptr) { st.push(it); }                        break;
+      case ']': if (!*ptr) { st.pop(); } else { it = st.top(); }  break;
+      default: break;
+    }
+  }
+  return 0;
+}
+
