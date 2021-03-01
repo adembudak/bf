@@ -8,7 +8,7 @@
 int main(int argc, const char *const argv[]) {
   using namespace std;
   if(argc < 2) {
-    printf("Usage: bf source\n");
+    fprintf(stderr, "Usage: %s source\n", argv[0]);
     return 1;
   }
 
